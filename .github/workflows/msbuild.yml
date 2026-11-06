@@ -27,9 +27,9 @@ jobs:
       run: nuget restore Xeno.sln
 
     - name: Build Solution
-      run: msbuild Xeno.sln /p:Configuration=Release /p:Platform=x64 /p:WindowsTargetPlatformVersion=10.0
+      run: msbuild Xeno.sln /p:Configuration=Release /p:Platform=x64 /p:WindowsTargetPlatformVersion=10.0 /p:Linkage=static
       env:
-        VCPKG_DEFAULT_TRIPLET: x64-windows
+        VCPKG_DEFAULT_TRIPLET: x64-windows-static
 
     - name: Upload Finished EXE
       uses: actions/upload-artifact@v4
@@ -38,4 +38,5 @@ jobs:
         path: |
           **/*.exe
           **/*.dll
+
 
