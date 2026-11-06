@@ -10,9 +10,15 @@ jobs:
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v4
+      with:
+        submodules: recursive
 
     - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v2
+
+    - name: Integrate vcpkg
+      run: |
+        vcpkg integrate install
 
     - name: Setup NuGet
       uses: NuGet/setup-nuget@v2
@@ -21,7 +27,9 @@ jobs:
       run: nuget restore Xeno.sln
 
     - name: Build Solution
-      run: msbuild Xeno.sln /p:Configuration=Release /p:Platform=x64
+      run: msbuild Xeno.sln /p:Configuration=Release /p:Platform=x64 /p:WindowsTargetPlatformVersion=10.0
+      env:
+        VCPKG_DEFAULT_TRIPLET: x64-windows
 
     - name: Upload Finished EXE
       uses: actions/upload-artifact@v4
